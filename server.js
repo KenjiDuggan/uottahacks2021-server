@@ -3,6 +3,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const quickStart = require("./translate/translate");
 const query = require("./dataaccesslater/queryDb");
+const queryDb = require("./dataaccesslater/queryDb");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -72,6 +73,13 @@ app.post("/api/submit-translation", (req, res) => {
   console.log(req.body.language);
 
   // Add key, post (i.e. translation) and language to database
+  let queryStr = genQueryString(
+    req.body.post,
+    req.body.title,
+    req.body.key,
+    req.body.language
+  );
+  queryDb(queryStr);
 
   res.send(`Thank you for submitting a translation`);
 });
@@ -87,3 +95,17 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
+function genQueryString(post, title, key, language) {
+  if (post != null) post = post.replace(/'/g, '"');
+  if (title != null) title = title.replace(/'/g, '"');
+  if (key != null) key = key.replace(/'/g, '"');
+  if (language != null) language = language.replace(/'/g, '"');
+
+  let queryStrCmd =
+    "INSERT INTO translations (languageId, translation, articleId, languageCode) ";
+  let queryStrParam =
+    "VALUES (1,'" + post + "', '" + key + "', '" + language + "');";
+
+  return queryStrCmd + queryStrParam;
+}
