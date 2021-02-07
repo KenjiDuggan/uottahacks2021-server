@@ -18,7 +18,7 @@ app.get("/api/article", async (req, res) => {
   let translation = "";
 
   // check if database has a translation in this language for this key
-  const isNativeTranslation = false;
+  const isCustomTranslation = false;
   // translation = fetchnews(req.body.key, language)
 
   // if not, get content and feed it to Google Translation
@@ -27,14 +27,14 @@ app.get("/api/article", async (req, res) => {
   const content = "hello";
 
   // const translation = translate()
-  if (!isNativeTranslation) {
+  if (!isCustomTranslation) {
     translation = await quickStart({
       text: content,
       target: req.body.language,
     });
   }
 
-  res.send({ express: { translation, isNativeTranslation } });
+  res.send({ express: { translation, isCustomTranslation } });
 });
 
 app.post("/api/submit-translation", (req, res) => {
@@ -45,7 +45,6 @@ app.post("/api/submit-translation", (req, res) => {
 
   // Add key, post (i.e. translation) and language to database
 
-  // add error handling?
   res.send(`Thank you for submitting a translation`);
 });
 
