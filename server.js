@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const quickStart = require("./translate/translate");
+const query = require("./dataaccesslater/queryDb");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -15,19 +16,39 @@ app.get("/api/article", async (req, res) => {
   console.log(req.body.language);
 
   let translation = "";
+  let isCustomTranslation;
 
   // check if database has a translation in this language for this key (including the title)
   // set isCustomTranslation true if database finds an existing translation in that language
-
-  const isCustomTranslation = false;
+  let queryResult;
+  var checkTranslation = function () {
+    queryResult = queryDb(
+      "SELECT EXISTS(SELECT translation " +
+        " FROM translations T " +
+        " INNER JOIN articles A " +
+        " ON T.articleId = A.url " +
+        " INNER JOIN languages L " +
+        " ON L.languageCode = " +
+        req.body.language +
+        " WHERE A.url = " +
+        req.body.key +
+        ");"
+    );
+  };
+  if (queryResult == "true") {
+    isCustomTranslation = true;
+  } else {
+    isCustomTranslation = false;
+  }
   const title =
     "Patrulla de patinaje: Oficiales de la Ordenanza de Ottawa patrullan el Rideau Canal Skateway este fin de semana para hacer cumplir las medidas COVID-19";
 
   // if not, get content and feed it to Google Translation
+  content = queryDb(
+    "SELECT content FROM articles WHERE url = " + req.body.key + ";"
+  );
 
   if (!isCustomTranslation) {
-    const content = "hello";
-
     // const content = fetchnews(req.body.key, language)
     translation = await quickStart({
       text: content,
@@ -36,6 +57,9 @@ app.get("/api/article", async (req, res) => {
 
     // if you aren't using Google Translate API, just return English translation
     // translation = content
+    if (!isCustomTranslation) {
+      translation = content;
+    }
   }
 
   res.send({ express: { translation, title, isCustomTranslation } });

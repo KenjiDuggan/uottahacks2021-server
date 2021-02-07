@@ -3,6 +3,7 @@ const fs = require("fs");
 const pg = require("pg");
 
 function queryDb(queryStr) {
+  var queryResult;
   // Connect to the database
   var config = {
     user: "uohacker",
@@ -40,6 +41,7 @@ function queryDb(queryStr) {
         }
 
         console.log("Query result:");
+        queryResult = results;
         results.rows.forEach(function (row) {
           console.log(row);
         });
@@ -49,6 +51,8 @@ function queryDb(queryStr) {
       }
     );
   });
+  queryResults = "test content";
+  return queryResults;
 }
 
 module.exports = queryDb;
