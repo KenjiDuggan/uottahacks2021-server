@@ -1,5 +1,4 @@
 const queryDb = require("./dataaccesslater/queryDb");
-const query = require("./dataaccesslater/queryDb");
 
 // Note: currently parses json synchronously
 function uploadToDb(resource) {

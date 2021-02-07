@@ -1,6 +1,10 @@
 const NewsAPI = require("newsapi");
 const uploadToDb = require("./uploadnews");
-const newsapi = new NewsAPI("3be45f290fed41d1b5406a2e4804e626");
+require("dotenv").config();
+
+const CREDENTIALS = JSON.parse(process.env.NEWSAPI - KEY);
+
+const newsapi = new NewsAPI(CREDENTIALS);
 
 // Calculate current date and past date
 var currentDate = new Date();
