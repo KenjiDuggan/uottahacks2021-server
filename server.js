@@ -25,7 +25,6 @@ app.get("/api/article", async (req, res) => {
   // if not, get content and feed it to Google Translation
 
   if (!isCustomTranslation) {
-    // const content = fetchnews(key)
     const content = "hello";
 
     // const content = fetchnews(req.body.key, language)
@@ -33,6 +32,9 @@ app.get("/api/article", async (req, res) => {
       text: content,
       target: req.body.language,
     });
+
+    // if you aren't using Google Translate API, just return English translation
+    // translation = content
   }
 
   res.send({ express: { translation, isCustomTranslation } });
