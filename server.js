@@ -24,7 +24,6 @@ app.get("/api/article", async (req, res) => {
 
   // if not, get content and feed it to Google Translation
 
-  // const translation = translate()
   if (!isCustomTranslation) {
     // const content = fetchnews(key)
     const content = "hello";
