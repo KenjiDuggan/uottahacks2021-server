@@ -1,7 +1,6 @@
 const NewsAPI = require("newsapi");
 const uploadToDb = require("./uploadnews");
 const newsapi = new NewsAPI("3be45f290fed41d1b5406a2e4804e626");
-const upload = require("./uploadnews");
 
 // Calculate current date and past date
 var currentDate = new Date();

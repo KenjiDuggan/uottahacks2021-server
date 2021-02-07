@@ -1,72 +1,53 @@
-const async = require("async");
-const fs = require("fs");
-const pg = require("pg");
-const getArticleContent = require("./getArticleContent");
-
-// Connect to the database
-var config = {
-  user: "uohacker",
-  host: "localhost",
-  database: "uottahack2021",
-  port: 26257,
-};
+const queryDb = require("./dataaccesslater/queryDb");
+const query = require("./dataaccesslater/queryDb");
 
 // Note: currently parses json synchronously
 function uploadToDb(resource) {
   let result = JSON.parse(JSON.stringify(resource));
   // update to just use sample content from news api
-  let text = getArticleContent(result.articles[0].url);
+  //let articles = getArticleContent(result.articles);
+  let articles = result.articles;
+
+  for (var i = 0; i < articles.length; i++) {
+    let queryStr = articleInsertQuery(articles[i]);
+    //console.log(queryStr);
+    //queryDb(queryStr);
+    //queryDb("DELETE FROM articles;");
+  }
 }
 
-// POSSIBLE OBSOLETE CODE IF WE'RE SWITCHING TO CASSANDRA
-// function connectToDb(articleDetails, articleText) {
-//   var pool = new pg.Pool(config);
+function articleInsertQuery(article) {
+  let sourceId = article.source.id;
+  if (sourceId != null) sourceId = sourceId.replace(/'/g, '"');
+  let sourceName = article.source.name.replace(/'/g, '"');
+  let title = article.title.replace(/'/g, '"');
+  let author = article.author;
+  if (sourceId != null) sourceId = sourceId.replace(/'/g, '"');
+  let description = article.description.replace(/'/g, '"');
+  let urltoimage = article.urlToImage.replace(/'/g, '"');
+  let publishedAt = article.publishedAt.replace(/'/g, '"');
 
-//   pool.connect(function (err, client, done) {
-//     // Close communication with the database and exit.
-//     var finish = function () {
-//       done();
-//       process.exit();
-//     };
+  let queryStrCmd =
+    "INSERT INTO articles (sourceid, sourcename, title, author, description, urltoimage, publishedAt) ";
+  let queryStrParam =
+    "VALUES ('" +
+    sourceId +
+    "', '" +
+    sourceName +
+    "', '" +
+    title +
+    "', '" +
+    author +
+    "', '" +
+    description +
+    "', '" +
+    urltoimage +
+    "', '" +
+    publishedAt +
+    "');";
 
-//     if (err) {
-//       console.error("could not connect to cockroachdb", err);
-//       finish();
-//     }
-//     async.waterfall(
-//       [
-//         function (next) {
-//           // Insert json data into the articles table
-//           client.query(
-//             "INSERT INTO articles (id, url) VALUES (1, 1000), (2, 250);",
-//             next
-//           );
-//         },
-
-//         function (results, next) {
-//           // Print out account balances.
-//           client.query("SELECT id, balance FROM accounts;", next);
-//         },
-//       ],
-//       function (err, results) {
-//         if (err) {
-//           console.error(
-//             "Error inserting into and selecting from articles: ",
-//             err
-//           );
-//           finish();
-//         }
-
-//         console.log("Initial balances:");
-//         results.rows.forEach(function (row) {
-//           console.log(row);
-//         });
-
-//         finish();
-//       }
-//     );
-//   });
-// }
+  return queryStrCmd + queryStrParam;
+}
 
 // Export module
 module.exports = uploadToDb;
