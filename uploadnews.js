@@ -9,8 +9,7 @@ function uploadToDb(resource) {
   let articles = result.articles;
 
   for (var i = 0; i < articles.length; i++) {
-    // let queryStr = articleInsertQuery(articles[i]);
-    let queryStr = genQueryString("post", "title", "url.com", "es");
+    let queryStr = articleInsertQuery(articles[i]);
     queryDb(queryStr);
     //console.log(queryStr);
     //queryDb(queryStr);
