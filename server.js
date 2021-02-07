@@ -20,7 +20,8 @@ app.get("/api/article", async (req, res) => {
   // set isCustomTranslation true if database finds an existing translation in that language
 
   const isCustomTranslation = false;
-  const title = "Article Title";
+  const title =
+    "Patrulla de patinaje: Oficiales de la Ordenanza de Ottawa patrullan el Rideau Canal Skateway este fin de semana para hacer cumplir las medidas COVID-19";
 
   // if not, get content and feed it to Google Translation
 
