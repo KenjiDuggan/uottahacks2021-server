@@ -14,6 +14,7 @@ var config = {
 // Note: currently parses json synchronously
 function uploadToDb(resource) {
   let result = JSON.parse(JSON.stringify(resource));
+  // update to just use sample content from news api
   let text = getArticleContent(result.articles[0].url);
 }
 

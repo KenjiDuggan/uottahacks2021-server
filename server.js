@@ -10,7 +10,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // API calls
 app.get("/api/hello", (req, res) => {
-  res.send({ express: "Hello From Our App" });
+  console.log(req.body.key);
+  console.log(req.body.language);
+
+  // check if database has a translation in this language for this key
+  const nativeTranslationInDB = false;
+
+  // if not, get content and feed it to Google Translation
+
+  // const content = fetchnews(key)
+
+  // const translation = translate()
+  const translation = "hello";
+
+  res.send({ express: translation });
 });
 
 app.post("/api/world", (req, res) => {
