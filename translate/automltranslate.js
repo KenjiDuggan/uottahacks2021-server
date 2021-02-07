@@ -1,7 +1,6 @@
-import projectId from "./projectId";
+// const projectId = 'projectId';
 // const location = 'us-central1';
 // const modelId = 'YOUR_MODEL_ID';
-// const filePath = 'path_to_local_file.txt';
 
 // Imports the Google Cloud AutoML library
 const { PredictionServiceClient } = require("@google-cloud/automl").v1;

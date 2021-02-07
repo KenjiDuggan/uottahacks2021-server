@@ -1,5 +1,4 @@
-import projectID from "./projectId";
-
+// const projectId = 'projectId';
 const location = "us-central1";
 const displayName = "covid-translate-uottahack";
 
