@@ -11,13 +11,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // API calls
 app.get("/api/article", async (req, res) => {
-  console.log("req", req.body);
   console.log(req.body.key);
   console.log(req.body.language);
 
   let translation = "";
 
-  // check if database has a translation in this language for this key
+  // check if database has a translation in this language for this key (including the title)
   // set isCustomTranslation true if database finds an existing translation in that language
 
   const isCustomTranslation = false;
@@ -37,7 +36,7 @@ app.get("/api/article", async (req, res) => {
     // translation = content
   }
 
-  res.send({ express: { translation, isCustomTranslation } });
+  res.send({ express: { translation, title, isCustomTranslation } });
 });
 
 app.post("/api/submit-translation", (req, res) => {
