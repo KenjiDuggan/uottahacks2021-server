@@ -18,16 +18,18 @@ app.get("/api/article", async (req, res) => {
   let translation = "";
 
   // check if database has a translation in this language for this key
+  // set isCustomTranslation true if database finds an existing translation in that language
+
   const isCustomTranslation = false;
-  // translation = fetchnews(req.body.key, language)
 
   // if not, get content and feed it to Google Translation
 
-  // const content = fetchnews(key)
-  const content = "hello";
-
   // const translation = translate()
   if (!isCustomTranslation) {
+    // const content = fetchnews(key)
+    const content = "hello";
+
+    // const content = fetchnews(req.body.key, language)
     translation = await quickStart({
       text: content,
       target: req.body.language,
