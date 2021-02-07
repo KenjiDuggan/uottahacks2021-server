@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
+const quickStart = require("./translate/translate");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -9,19 +10,29 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // API calls
-app.get("/api/article", (req, res) => {
+app.get("/api/article", async (req, res) => {
+  console.log("req", req.body);
   console.log(req.body.key);
   console.log(req.body.language);
 
+  let translation = "";
+
   // check if database has a translation in this language for this key
   const isNativeTranslation = false;
+  // translation = fetchnews(req.body.key, language)
 
   // if not, get content and feed it to Google Translation
 
   // const content = fetchnews(key)
+  const content = "hello";
 
   // const translation = translate()
-  const translation = "hola";
+  if (!isNativeTranslation) {
+    translation = await quickStart({
+      text: content,
+      target: req.body.language,
+    });
+  }
 
   res.send({ express: { translation, isNativeTranslation } });
 });
