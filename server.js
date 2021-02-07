@@ -9,33 +9,33 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // API calls
-app.get("/api/hello", (req, res) => {
+app.get("/api/article", (req, res) => {
   console.log(req.body.key);
   console.log(req.body.language);
 
   // check if database has a translation in this language for this key
-  const nativeTranslationInDB = false;
+  const isNativeTranslation = false;
 
   // if not, get content and feed it to Google Translation
 
   // const content = fetchnews(key)
 
   // const translation = translate()
-  const translation = "hello";
+  const translation = "hola";
 
-  res.send({ express: translation });
+  res.send({ express: { translation, isNativeTranslation } });
 });
 
-app.post("/api/world", (req, res) => {
+app.post("/api/submit-translation", (req, res) => {
   console.log(req.body.post);
+  console.log(req.body.title);
   console.log(req.body.key);
   console.log(req.body.language);
 
   // Add key, post (i.e. translation) and language to database
 
-  res.send(
-    `I received your POST request. This is what you sent me: ${req.body.post}`
-  );
+  // add error handling?
+  res.send(`Thank you for submitting a translation`);
 });
 
 if (process.env.NODE_ENV === "production") {
