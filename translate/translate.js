@@ -10,14 +10,14 @@ const translate = new Translate({
   projectId: CREDENTIALS.project_id,
 });
 
-async function quickStart() {
+const quickStart = async ({ text, target }) => {
   // The text to translate
-  const text = "Hello, world!";
+  //   const text = "Hello, world!";
 
   // The target language
-  const target = "es";
+  //   const target = "es";
 
-  // Translates some text into Spanish
+  // Translates some text
   try {
     const [translation] = await translate.translate(text, target);
     console.log(`Text: ${text}`);
@@ -27,6 +27,6 @@ async function quickStart() {
     console.error("error: ", error);
     return error;
   }
-}
+};
 
-quickStart();
+module.exports = quickStart;

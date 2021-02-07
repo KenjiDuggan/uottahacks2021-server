@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
+const quickStart = require("./translate/translate");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -9,21 +10,35 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // API calls
-app.get("/api/article", (req, res) => {
+app.get("/api/article", async (req, res) => {
   console.log(req.body.key);
   console.log(req.body.language);
 
-  // check if database has a translation in this language for this key
-  const isNativeTranslation = false;
+  let translation = "";
+
+  // check if database has a translation in this language for this key (including the title)
+  // set isCustomTranslation true if database finds an existing translation in that language
+
+  const isCustomTranslation = false;
+  const title =
+    "Patrulla de patinaje: Oficiales de la Ordenanza de Ottawa patrullan el Rideau Canal Skateway este fin de semana para hacer cumplir las medidas COVID-19";
 
   // if not, get content and feed it to Google Translation
 
-  // const content = fetchnews(key)
+  if (!isCustomTranslation) {
+    const content = "hello";
 
-  // const translation = translate()
-  const translation = "hola";
+    // const content = fetchnews(req.body.key, language)
+    translation = await quickStart({
+      text: content,
+      target: req.body.language,
+    });
 
-  res.send({ express: { translation, isNativeTranslation } });
+    // if you aren't using Google Translate API, just return English translation
+    // translation = content
+  }
+
+  res.send({ express: { translation, title, isCustomTranslation } });
 });
 
 app.post("/api/submit-translation", (req, res) => {
@@ -34,7 +49,6 @@ app.post("/api/submit-translation", (req, res) => {
 
   // Add key, post (i.e. translation) and language to database
 
-  // add error handling?
   res.send(`Thank you for submitting a translation`);
 });
 
