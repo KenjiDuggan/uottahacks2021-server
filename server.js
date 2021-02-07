@@ -20,6 +20,7 @@ app.get("/api/article", async (req, res) => {
   // set isCustomTranslation true if database finds an existing translation in that language
 
   const isCustomTranslation = false;
+  const title = "Article Title";
 
   // if not, get content and feed it to Google Translation
 
